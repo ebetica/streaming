@@ -11,6 +11,7 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, wait
 from concurrent.futures._base import Future
 from enum import IntEnum
+from getpass import getuser
 from math import ceil
 from threading import Event, Lock
 from time import sleep, time_ns
@@ -495,7 +496,7 @@ class StreamingDataset(Array, IterableDataset):
         ]
         self._shm_prefix_int, self._locals_shm = get_shm_prefix(streams_local, streams_remote,
                                                                 world)
-        self._filelock_root = os.path.join(os.path.sep, 'tmp', 'streaming')
+        self._filelock_root = os.path.join(os.path.sep, 'tmp', getuser(), 'streaming')
         os.makedirs(self._filelock_root, exist_ok=True)
 
         # Create the shared memory-backed barrier, without its lock, which is unpickleable.
